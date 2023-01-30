@@ -34,18 +34,6 @@ class Solution {
   }
 
   public int calcNum(int i, int j) {
-      if (i < 3) {
-          if (j < 3) return 0;
-          else if (j < 6) return 1;
-          else return 2;
-      } else if (i < 6) {
-          if (j < 3) return 3;
-          else if (j < 6) return 4;
-          else return 5;
-      } else {
-          if (j < 3) return 6;
-          else if (j < 6) return 7;
-          else return 8;
-      }
+    return (i/3)*3 + j/3;
   }
 }
