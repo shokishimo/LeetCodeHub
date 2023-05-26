@@ -16,7 +16,7 @@
 class Solution {
   int unbalanced = -1;
   public boolean isBalanced(TreeNode root) {
-      return (hightBalanceChecker(root) == -1)? false: true; 
+      return (hightBalanceChecker(root) == unbalanced)? false: true; 
   }
 
   private int hightBalanceChecker(TreeNode root) {
