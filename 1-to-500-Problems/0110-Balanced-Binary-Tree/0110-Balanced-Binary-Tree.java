@@ -14,6 +14,7 @@
  * }
  */
 class Solution {
+  int unbalanced = -1;
   public boolean isBalanced(TreeNode root) {
       return (hightBalanceChecker(root) == -1)? false: true; 
   }
@@ -23,8 +24,8 @@ class Solution {
 
       int l = hightBalanceChecker(root.left);
       int r = hightBalanceChecker(root.right);
-      if (l == -1 || r == -1) return -1;
-      else if (l > r+1 || r > l+1) return -1;
+      if (l == unbalanced || r == unbalanced) return unbalanced;
+      else if (l > r+1 || r > l+1) return unbalanced;
 
       return Math.max(l, r) + 1;
   }
