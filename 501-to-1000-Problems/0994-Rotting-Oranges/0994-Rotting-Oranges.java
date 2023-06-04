@@ -1,10 +1,7 @@
 class Solution {
-  int row;
-  int col;
-
   public int orangesRotting(int[][] grid) {
-      row = grid.length;
-      col = grid[0].length;
+      int row = grid.length;
+      int col = grid[0].length;
       Deque<int[]> que = new ArrayDeque<>();
       int rotten = 0;
       int fresh = 0;
