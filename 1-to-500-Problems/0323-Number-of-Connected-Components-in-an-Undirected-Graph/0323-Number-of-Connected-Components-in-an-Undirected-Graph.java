@@ -32,6 +32,7 @@ class Solution {
 
 // Solution 2, Using UnionFind, more effient
 class Solution {
+    int num;
     public int countComponents(int n, int[][] edges) {
         int[] par = new int[n];
         int[] rank = new int[n];
@@ -40,12 +41,9 @@ class Solution {
             rank[i] = 1;
         }
 
+        num = n;
         for (int[] edge: edges) {
             union(edge[0], edge[1], par, rank);
-        }
-        int num = 0;
-        for (int each: rank) {
-            if (each != 0) num++;
         }
 
         return num;
@@ -58,13 +56,12 @@ class Solution {
         if (A == B) return;
         if (rank[A] >= rank[B]) {
             rank[A] += rank[B];
-            rank[B] = 0;
             par[B] = A;
         } else {
             rank[B] += rank[A];
-            rank[A] = 0;
             par[A] = B;
         }
+        num--;
     }
 
     private int getPar(int p, int[] par) {
