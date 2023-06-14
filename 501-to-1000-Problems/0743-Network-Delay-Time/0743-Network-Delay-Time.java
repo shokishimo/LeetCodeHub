@@ -1,3 +1,4 @@
+// Solution 1 Dijkstra's Algorithm
 class Solution {
     Map<Integer, List<Pair<Integer, Integer>>> adj = new HashMap<>();
     public int networkDelayTime(int[][] times, int n, int k) {
@@ -45,5 +46,43 @@ class Solution {
                 }
             }
         }
+    }
+}
+
+// Solution 2 BFS
+class Solution {
+    public int networkDelayTime(int[][] times, int n, int k) {
+        HashMap<Integer, List<int[]>> adj = new HashMap<>();
+        for (int i = 0; i < times.length; i++) {
+            adj.putIfAbsent(times[i][0], new ArrayList<>());
+            adj.get(times[i][0]).add(times[i]);
+        }
+
+        int[] timeToTake = new int[n+1];
+        Arrays.fill(timeToTake, Integer.MAX_VALUE);
+        timeToTake[k] = 0;
+        Queue<Integer> q = new ArrayDeque<>();
+        q.add(k);
+
+        while(!q.isEmpty()) {
+            int cur = q.poll();
+
+            if (adj.get(cur) == null) continue;
+
+            for (int[] next: adj.get(cur)) {
+                if (timeToTake[cur]+next[2] < timeToTake[next[1]]) {
+                    timeToTake[next[1]] = timeToTake[cur] + next[2];
+                    q.add(next[1]);
+                }
+            }
+        }
+
+        int cost = 0;
+        for (int i = 1; i < timeToTake.length; i++) {
+            if (timeToTake[i] == Integer.MAX_VALUE) return -1;
+            cost = Math.max(cost, timeToTake[i]);
+        }
+
+        return cost;
     }
 }
