@@ -22,3 +22,31 @@ class Solution {
         }
     }
 }
+
+// Solution 2
+class Solution {
+    public void sortColors(int[] nums) {
+        int l = 0;
+        int r = nums.length-1;
+        int i = 0;
+
+        while (l < r && i <= r) {
+            if (nums[i] == 0) {
+                switchNum(nums, l, i);
+                l++;
+                i++;
+            } else if (nums[i] == 2) {
+                switchNum(nums, r, i);
+                r--;
+            } else {
+                i++;
+            }
+        }
+    }
+
+    private void switchNum(int[] nums, int a, int i) {
+        int temp = nums[a];
+        nums[a] = nums[i];
+        nums[i] = temp;
+    }
+}
