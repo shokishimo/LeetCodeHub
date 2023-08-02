@@ -26,3 +26,30 @@ class Solution {
     }
     
 }
+
+
+// solution 2 resolve
+
+class Solution {
+    List<List<Integer>> ans;
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        ans = new ArrayList<>();
+        backtrack(candidates, target, new ArrayList<>(), 0);
+
+        return ans;
+    }
+
+    private void backtrack(int[] candidates, int target, List<Integer> cur, int subInd) {
+        if (target < 0 || subInd == candidates.length) return;
+        if (target == 0) {
+            ans.add(new ArrayList<>(cur));
+            return;
+        }
+
+        for (int i = subInd; i < candidates.length; i++) {
+            cur.add(candidates[i]);
+            backtrack(candidates, target - candidates[i], cur, i);
+            cur.remove(Integer.valueOf(candidates[i]));
+        }
+    }
+}
