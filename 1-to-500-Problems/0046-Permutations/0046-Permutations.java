@@ -24,3 +24,32 @@ class Solution {
       }
   }
 }
+
+// resolve
+
+class Solution {
+    List<List<Integer>> ans;
+
+    public List<List<Integer>> permute(int[] nums) {
+        ans = new ArrayList<>();
+        HashSet<Integer> set = new HashSet<>();
+        backtrack(nums, set, new ArrayList<>());
+        return ans;
+    }
+
+    private void backtrack(int[] nums, HashSet<Integer> set, List<Integer> cur) {
+        if (cur.size() >= nums.length) {
+            ans.add(new ArrayList<>(cur));
+        }
+
+        for (int i = 0 ; i < nums.length; i++) {
+            if (!set.contains(nums[i])) {
+                set.add(nums[i]);
+                cur.add(nums[i]);
+                backtrack(nums, set, cur);
+                cur.remove(cur.size()-1);
+                set.remove(nums[i]);
+            }
+        }
+    }
+}
