@@ -22,3 +22,33 @@ class Solution {
       }
   }
 }
+
+// resolve
+class Solution {
+    List<List<Integer>> ans;
+
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        ans = new ArrayList<>();
+        backtrack(nums, 0, new ArrayList<>());
+
+        return ans;
+    }
+
+    private void backtrack(int[] nums, int ind, List<Integer> cur) {
+        if (ind >= nums.length) {
+            ans.add(new ArrayList<>(cur));
+            return;
+        }
+
+        cur.add(nums[ind]);
+        backtrack(nums, ind+1, cur);
+
+        cur.remove(cur.size()-1);
+        int curVal = nums[ind];
+        while(ind < nums.length && curVal == nums[ind]) {
+            ind++;
+        }
+        backtrack(nums, ind, cur);
+    }
+}
