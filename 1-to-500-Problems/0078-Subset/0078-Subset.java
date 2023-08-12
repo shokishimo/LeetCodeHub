@@ -1,45 +1,22 @@
-class Solution {
-  public List<List<Integer>> subsets(int[] nums) {
-      List<List<Integer>> ans = new ArrayList<>();
-      backTrack(nums, ans, 0);
-      return ans;
-  }
+// resolve
 
-  public void backTrack(int[] nums, List<List<Integer>> ans, int i) {
-      if (i >= nums.length) {
-          ans.add(new ArrayList<>());
-          return;
-      }
-      backTrack(nums, ans, i+1);
-      int len = ans.size();
-      for (int j = 0; j < len; j++) {
-          ArrayList<Integer> temp = new ArrayList<>();
-          for(int k: ans.get(j)) {
-              temp.add(k);
-          }
-          temp.add(nums[i]);
-          ans.add(temp);
-      }
-  }
-}
-
-// resolved the problem
 class Solution {
+    List<List<Integer>> ans;
     public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> ans = new ArrayList<>();
-        ans.add(new ArrayList<>());
-        backtrack(nums, ans);
+        ans = new ArrayList<>();
+        backtrack(nums, new ArrayList<>(), 0);
         return ans;
     }
 
-    private void backtrack(int[] nums, List<List<Integer>> ans) {
-        for (int i = 0; i < nums.length; i++) {
-            int size = ans.size();
-            for (int j = 0; j < size; j++) {
-                List<Integer> temp = new ArrayList<>(ans.get(j));
-                temp.add(nums[i]);
-                ans.add(temp);
-            }
+    private void backtrack(int[] nums, List<Integer> curSub, int i) {
+        if (i >= nums.length) {
+            ans.add(new ArrayList<>(curSub));
+            return;
         }
+
+        backtrack(nums, curSub, i+1);
+        curSub.add(nums[i]);
+        backtrack(nums, curSub, i+1);
+        curSub.remove(curSub.size()-1);
     }
 }
