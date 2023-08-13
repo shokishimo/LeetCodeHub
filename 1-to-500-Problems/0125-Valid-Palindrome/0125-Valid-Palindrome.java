@@ -3,9 +3,9 @@ class Solution {
         StringBuilder sb = new StringBuilder();
 
         s.chars()
-                .filter(c -> Character.isLetterOrDigit(c))
-                .mapToObj(c -> Character.toLowerCase((char) c))
-                .forEach(sb::append);
+          .filter(c -> Character.isLetterOrDigit(c))
+          .mapToObj(c -> Character.toLowerCase((char) c))
+          .forEach(sb::append);
 
         return sb.toString().equals(sb.reverse().toString());
     }
