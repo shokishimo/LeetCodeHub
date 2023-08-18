@@ -1,40 +1,29 @@
+// resolve 1
 class Solution {
-  public boolean checkInclusion(String s1, String s2) {
-      char[] s1Arr = s1.toCharArray();
-      Arrays.sort(s1Arr);
-      s1 = new String(s1Arr);
+    public boolean checkInclusion(String s1, String s2) {
+        int[] s1Map = new int[26];
+        for (char c : s1.toCharArray()) {
+            s1Map[c-'a']++;
+        }
 
-      int len = s1.length();
-      for (int i = 0; i + len -1 < s2.length(); i++)
-      {
-          char[] temp = s2.substring(i, len+i).toCharArray();
-          Arrays.sort(temp);
-          String t = new String(temp);
-          if (s1.equals(t)) return true;
-      }
-      return false;
-  }
-}
+        int l = 0;
+        for (int r = 0; r < s2.length(); r++) {
+            char c = s2.charAt(r);
+            s1Map[c-'a']--;
+            if (s1Map[c-'a'] < 0 || r - l + 1 > s1.length()) {
+                s1Map[s2.charAt(l)-'a']++;
+                l++;
+            }
+            if (checkIfAllZero(s1Map)) return true;
+        }
 
+        return false;
+    }
 
-// second solution
-class Solution {
-  public boolean isValid(String s) {
-      HashMap<Character, Character> map = new HashMap<>();
-      map.put(')', '(');
-      map.put('}', '{');
-      map.put(']', '[');
-      Stack<Character> stack = new Stack<>();
-
-      for (char c: s.toCharArray()) {
-          if (map.get(c) == null) {
-              stack.push(c);
-          } else {
-              if (stack.isEmpty()) return false;
-              else if (stack.pop() != map.get(c)) return false;
-          }
-      }
-
-      return stack.isEmpty();
-  }
+    private boolean checkIfAllZero(int[] map) {
+        for (int each : map) {
+            if (each != 0) return false;
+        }
+        return true;
+    }
 }
