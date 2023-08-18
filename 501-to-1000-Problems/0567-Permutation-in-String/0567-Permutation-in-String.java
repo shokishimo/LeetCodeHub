@@ -27,3 +27,39 @@ class Solution {
         return true;
     }
 }
+
+// resolve 2
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        if (s1.length() > s2.length()) return false;
+        int[] s1Map = new int[26];
+        int[] s2Map = new int[26];
+        for (int i = 0; i < s1.length(); i++) {
+            s1Map[s1.charAt(i)-'a']++;
+            s2Map[s2.charAt(i)-'a']++;
+        }
+        int matchCount = 0;
+        for (int i = 0; i < 26; i++) {
+            if (s1Map[i] == s2Map[i]) matchCount++;
+        }
+
+        int l = 0;
+        for (int r = s1.length(); r < s2.length(); r++) {
+            if (matchCount == 26) return true;
+
+            int ind = s2.charAt(r)-'a';
+            s2Map[ind]++;
+            if (s2Map[ind] == s1Map[ind]) matchCount++;
+            else if (s2Map[ind] - 1 == s1Map[ind]) matchCount--;
+
+            ind = s2.charAt(l)-'a';
+            s2Map[ind]--;
+            if (s2Map[ind] == s1Map[ind]) matchCount++;
+            else if (s2Map[ind] + 1 == s1Map[ind]) matchCount--;
+
+            l++;
+        }
+
+        return matchCount == 26? true : false;
+    }
+}
