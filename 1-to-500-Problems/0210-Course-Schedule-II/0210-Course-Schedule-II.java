@@ -1,35 +1,35 @@
 class Solution {
-  public int[] findOrder(int numCourses, int[][] prerequisites) {
-      int[] ans = new int[numCourses];
-      int[] prereqCount = new int[numCourses];
-      List<List<Integer>> courses = new ArrayList<>();
-      for (int i = 0; i < numCourses; i++) {
-          courses.add(new ArrayList<>());
-      }
-      for (int i = 0; i < prerequisites.length; i++) {
-          int wantToTake = prerequisites[i][0];
-          int mustTakeF = prerequisites[i][1];
-          prereqCount[wantToTake]++;
-          courses.get(mustTakeF).add(wantToTake);
-      }
-      Deque<Integer> q = new ArrayDeque<>();
-      for (int i = 0; i < numCourses; i++) {
-          if (prereqCount[i] == 0) q.add(i);
-      }
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> nextCourses = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            nextCourses.add(new ArrayList<>());
+        }
+        int[] prereqCount = new int[numCourses];
+        for (int[] eachPre : prerequisites) {
+            nextCourses.get(eachPre[1]).add(eachPre[0]);
+            prereqCount[eachPre[0]]++;
+        }
 
-      int taken = 0;
-      int index = 0;
-      while (!q.isEmpty()) {
-          int takeNow = q.poll();
-          taken++;
-          ans[index++] = takeNow;
-          for (int each: courses.get(takeNow)) {
-              prereqCount[each]--;
-              if (prereqCount[each] == 0) q.add(each);
-          }
-      }
+        Deque<Integer> nextStartPos = new LinkedList<>();
+        for (int i = 0; i < prereqCount.length; i++) {
+            if (prereqCount[i] == 0) nextStartPos.add(i);
+        }
 
-      if (taken != numCourses) return new int[0];
-      return ans;
-  }
+        int[] ans = new int[numCourses];
+        int ind = 0;
+        int taken = 0;
+        while (!nextStartPos.isEmpty()) {
+            int curCourse = nextStartPos.poll();
+            ans[ind++] = curCourse;
+            taken++;
+
+            for (int nextCourse : nextCourses.get(curCourse)) {
+                prereqCount[nextCourse]--;
+                if (prereqCount[nextCourse] == 0)
+                    nextStartPos.add(nextCourse);
+            }
+        }
+
+        return (taken == numCourses)? ans : new int[]{};
+    }
 }
