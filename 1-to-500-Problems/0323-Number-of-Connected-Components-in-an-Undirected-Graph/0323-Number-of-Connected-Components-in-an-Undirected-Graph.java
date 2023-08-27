@@ -1,38 +1,43 @@
-// Solution 1, Using DFS, less efficient
+// resolve
+
+// DFS Solution
 class Solution {
-    List<List<Integer>> graph;
-    HashSet<Integer> visited;
     public int countComponents(int n, int[][] edges) {
-        graph = new ArrayList<>();
+        List<List<Integer>> theEdges = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            graph.add(new ArrayList<>(i));
+            theEdges.add(new ArrayList<>());
         }
-        for (int[] edge: edges) {
-            graph.get(edge[0]).add(edge[1]);
-            graph.get(edge[1]).add(edge[0]);
+        for (int[] curEdge : edges) {
+            theEdges.get(curEdge[0]).add(curEdge[1]);
+            theEdges.get(curEdge[1]).add(curEdge[0]);
         }
-        visited = new HashSet<>();
-        int count = 0;
+
+        boolean[] visited = new boolean[n];
+        int ans = 0;
         for (int i = 0; i < n; i++) {
-            if (!visited.contains(i)) {
-                dfs(i);
-                count++;
+            if (!visited[i]) {
+                dfs(theEdges, visited, i);
+                ans++;
             }
         }
-        return count;
+
+        return ans;
     }
 
-    private void dfs(int cur) {
-        visited.add(cur);
-        for (int next: graph.get(cur)) {
-            if (!visited.contains(next)) dfs(next);
+    private void dfs(List<List<Integer>> theEdges, boolean[] visited, int curInd) {
+        if (visited[curInd]) return;
+
+        visited[curInd] = true;
+        for (int nextNode : theEdges.get(curInd)) {
+            dfs(theEdges, visited, nextNode);
         }
     }
 }
 
-// Solution 2, Using UnionFind, more effient
+
+
+// // Union-Find Solution
 class Solution {
-    int num;
     public int countComponents(int n, int[][] edges) {
         int[] par = new int[n];
         int[] rank = new int[n];
@@ -41,33 +46,30 @@ class Solution {
             rank[i] = 1;
         }
 
-        num = n;
-        for (int[] edge: edges) {
-            union(edge[0], edge[1], par, rank);
+        int res = n;
+        for (int[] edge : edges) {
+            if (union(edge[0], edge[1], par, rank)) res--;
         }
-
-        return num;
+        return res;
     }
 
-    private void union(int a, int b, int[] par, int[] rank) {
-        int A = getPar(a, par);
-        int B = getPar(b, par);
+    private boolean union(int a, int b, int[] par, int[] rank) {
+        int A = find(a, par);
+        int B = find(b, par);
 
-        if (A == B) return;
-        if (rank[A] >= rank[B]) {
+        if(A == B) return false;
+        if (rank[A] > rank[B]) {
             rank[A] += rank[B];
             par[B] = A;
         } else {
             rank[B] += rank[A];
             par[A] = B;
         }
-        num--;
+        return true;
     }
 
-    private int getPar(int p, int[] par) {
-        p = par[p];
-
-        while (p != par[p]) {
+    private int find(int p, int[] par) {
+        while(p != par[p]) {
             par[p] = par[par[p]];
             p = par[p];
         }
